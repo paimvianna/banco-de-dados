@@ -1,0 +1,70 @@
+DROP DATABASE IF EXISTS condominio;
+CREATE DATABASE condominio;
+USE condominio;
+CREATE TABLE moradores(       
+ID_moradores INT PRIMARY KEY AUTO_INCREMENT,
+nome VARCHAR (255),
+apartamento VARCHAR (255),
+telefone_contato VARCHAR (255)
+);
+CREATE TABLE estacionamento
+(
+ID_carro INT PRIMARY KEY, -- não inseri o auto_increment e tenho que informar os ID's dos carros.
+nome VARCHAR (255),
+marca VARCHAR (255),
+placa VARCHAR (255) unique, -- coloquei o coamndo unique apos os testes vou tentar inserir uma placa duplicada
+proprietario int,
+CONSTRAINT fk_moraestaci FOREIGN KEY (proprietario) REFERENCES moradores (ID_moradores)
+);
+INSERT INTO moradores (nome, apartamento, telefone_contato) VALUES
+('Maria', '102', '333102'),
+('João', '103', '333103'),
+('Zeze', '104', '333104');
+select ID_moradores, nome, apartamento, telefone_contato from moradores where nome like '%';
+
+INSERT INTO estacionamento (ID_carro, nome, marca, placa, proprietario) VALUES
+(1, 'pampa', 'chevrolet', 'abc-12102', '1'),
+(2, 'celta', 'chevrolet', 'bcd-23102', '1'),
+(3, 'corsa', 'chevrolet', 'cde-34102', '1'),
+(4, 'c3', 'citroem', 'def-12103', '2'),
+(5, 'sandero', 'renault', 'efg-23103', '2'),
+(6, 'corsa', 'chevrolet', 'fgh-12104', '3');
+select ID_carro, nome, marca, placa, proprietario from estacionamento where placa like '%e%';
+select ID_carro, nome, marca, placa, proprietario from estacionamento where nome like '%';
+delete from moradores where ID_moradores=1; -- tentei deletar pra ver se funcionou a chave estrangeira--
+insert into moradores (nome, apartamento, telefone_contato) values -- inserção de teste funcionou
+('Flor', '105', '333105');
+INSERT INTO moradores (nome, apartamento, telefone_contato) VALUES -- inseri estes dados por engano e ficou duplicado
+('Maria', '102', '333102'),
+('João', '103', '333103'),
+('Zeze', '104', '333104');
+update moradores set apartamento=apartamento+4, telefone_contato=telefone_contato+4 where Id_moradores > 4; -- correção dos dados duplicados
+select ID_moradores, nome, apartamento, telefone_contato from moradores where nome like '%';
+
+select moradores.nome, moradores.apartamento, estacionamento.nome, estacionamento.placa
+from moradores 
+	left join estacionamento on moradores.ID_moradores = estacionamento.proprietario
+    where estacionamento.proprietario like '%'; -- consegui fazer a busca por todos os proprietarios com seus apartamento de todos os veiculos.
+
+delete
+from estacionamento 
+where estacionamento.proprietario = 3; -- primeiro se retira o carro
+
+delete
+from moradores 
+where moradores.ID_moradores = 3; -- depois o morador
+
+select moradores.nome, moradores.apartamento, estacionamento.nome, estacionamento.placa
+from moradores 
+	left join estacionamento on moradores.ID_moradores = estacionamento.proprietario
+    where estacionamento.proprietario like '%'; -- consegui fazer a busca por todos os proprietarios com seus apartamento de todos os veiculos.
+    
+INSERT INTO estacionamento (ID_carro, nome, marca, placa, proprietario) VALUES
+(8, 'livina', 'nissan', 'abc-12102', '7'); -- esqueci de atualizar a planilha vou dar um drop no banco e tenta depois.
+INSERT INTO estacionamento (ID_carro, nome, marca, placa, proprietario) VALUES
+(8, 'livina', 'nissan', 'abc-12108', '7'); -- fazendo a correção da placa funcionou perfeitamente.
+
+select moradores.nome, moradores.apartamento, estacionamento.nome, estacionamento.placa
+from moradores 
+	left join estacionamento on moradores.ID_moradores = estacionamento.proprietario
+    where moradores.ID_moradores like '%'; -- consegui fazer a busca por todos os proprietarios com seus apartamento de todos os veiculos.

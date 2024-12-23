@@ -1,0 +1,115 @@
+DROP DATABASE IF EXISTS spotify;
+CREATE DATABASE spotify;
+USE spotify;
+create table Banda(
+banda_id int PRIMARY KEY, -- insere id como identificador da tabela banda...
+nome VARCHAR (100) NOT NULL,
+estilo_id int
+);
+create table Estilo(
+estilo_id int PRIMARY KEY,-- insere id com identificador da tabela estilo...
+nome VARCHAR (100) NOT NULL
+);
+create table Album(
+album_id int PRIMARY KEY, -- insere id com identificador da tabela Album...
+nome VARCHAR (100) NOT NULL,
+lancamento int,
+banda_id int,
+estilo_id int
+);
+create table Musica(
+musica_id int PRIMARY KEY, -- insere id com identificador da tabela album...
+nome VARCHAR (100) NOT NULL,
+banda_id int,
+estilo_id int,
+album_id int,
+duracao VARCHAR (10)
+);
+INSERT INTO Estilo (estilo_id, nome) VALUES
+(1, 'Hard Rock'),
+(2, 'Metal'),
+(3, 'Glam Metal');
+INSERT INTO Banda (banda_id, nome, estilo_id) VALUES
+(1, 'Led Zeppelin','1'),
+(2, 'ACDC', '1'),
+(3, 'Aerosmith','1'),
+(4, 'Black Label Society', '2'),
+(5, 'Crazy Lixx', '3');
+INSERT INTO Album (album_id, nome, lancamento, banda_id, estilo_id) VALUES
+(1,'SOZO',1971, 1, 1),
+(2,'Ballbreaker', 1990, 2,1),
+(3, 'Toys in the attic', 1973, 3,1),
+(4, 'Mafia', 2004, 4, 2),
+(5, 'Crazy Lixx', 2020, 5, 3);
+INSERT INTO Musica (musica_id, nome, banda_id, estilo_id, album_id, duracao) VALUES
+(1, 'Four Sticks',1,1, 1, "04:20"),
+(2, 'Burning Alive',2, 1,2, "03:20"),
+(3, 'Round and Round',3, 1,3, "03:20"),
+(4, 'Fire it up', 4, 2, 4 , "05:00"),
+(5, 'Hell raising woman', 5,3,5, "05:00");
+select banda_id, nome from Banda where nome like '%A%' or '%a%';
+select musica_id, nome from Musica where estilo_id=1;
+select album_id, nome from Album where estilo_id = 1 and  (nome like '%A%' or '%a%');
+select banda_id, nome from Banda where banda_id = 1 and estilo_id = 1;
+select musica_id, nome from Musica where banda_id = 2;
+select Banda.nome, Musica.nome from Banda join Musica where Musica.banda_id = Banda.banda_id;
+select Banda.nome, Musica.nome from Banda join Musica on (Banda.banda_id=Musica.banda_id);
+select Banda.nome, Musica.nome from Banda join Musica using (banda_id);
+insert into Banda(banda_id, nome,estilo_id) values 
+(6,'Poison', 3);
+select Banda.nome, Musica.nome from Banda left join Musica using(banda_id);
+insert into Estilo (estilo_id, nome) values
+(4, 'Samba'),
+(5, 'Pagode');
+INSERT INTO Banda (banda_id, nome, estilo_id) VALUES
+(7, 'Alcione', 4),
+(8, 'Emilio Santiago', 4),
+(9, 'ArtPopular', 5),
+(10, 'Kiloucura', 5);
+INSERT INTO Album (album_id, nome, lancamento, banda_id, estilo_id) VALUES
+(7,'Alcione AO VIVO', 2002, 7, 4),
+(8,'Aquarela do Brasil', 1989, 8, 4),
+(9, 'Temporal', 1996, 9, 5),
+(10, 'Kiloucura', 2000, 10, 5);
+INSERT INTO Musica (musica_id, nome, banda_id, estilo_id, album_id, duracao) VALUES
+(7, 'A Loba', 7, 4, 7, '4:55'),
+(8, 'Voce me vira a cabeça', 7, 4, 7, '4:52'),
+(9, 'Faz uma loucura por mim', 7, 4, 7, '5:05'),
+(10, 'Minha estranha  loucura', 7, 4, 7, '4:55'),
+(11, 'Saigon', 8, 4, 8,'4:59' ),
+(12, 'Verdade chinesa', 8, 4, 8,'4:50' ),
+(13, 'Flor de lis', 8, 4, 8,'2:50' ),
+(14, 'As rosas nao falam', 8, 4, 8,'2:48' ),
+(15, 'Pipolho', 9, 5, 9, '3:34'),
+(16, 'Temporal', 9, 5, 9, '5:10'),
+(17, 'Nani', 9, 5, 9, '4:10'),
+(18, 'Tardes', 9, 5, 9, '4:36'),
+(19, 'Nao foi a toa', 10, 5, 10, '3:34'),
+(20, 'Tudo fica blue/Supra sumo do amor', 10, 5, 10, '5:01'),
+(21, 'Timidez', 10, 5, 10, '4:27'),
+(22, 'Cartão Postal', 10, 5, 10, '4:55');
+select Banda.nome from Banda join Estilo on Banda.estilo_id = Estilo.estilo_id where Estilo.nome like '%Rock%';
+select Musica.nome From Musica join Estilo on Musica.estilo_id = Estilo.estilo_id where Estilo.nome like '%Rock%';
+select Banda.nome from Banda join Estilo on Banda.estilo_id = Estilo.estilo_id where Estilo.nome like '%Samba%';
+select Musica.nome From Musica join Estilo on Musica.estilo_id = Estilo.estilo_id where Estilo.nome like '%Pagode%';
+select Album.nome from Album join Banda on Album.banda_id = Banda.banda_id where Banda.nome like 'Alcione';
+select Banda.nome, Musica.nome, Album.nome from Banda left join Musica on Banda.banda_id = Musica.banda_id left join Album on Musica.album_id = Album.album_id;
+select Banda.nome As banda, Musica.nome As musica, Album.nome As album -- se colocar uma , entre o from  e o ultimo termo nao pega o AS --
+from Banda 
+	left join Musica on Banda.banda_id = Musica.banda_id 
+    left join Album on Musica.album_id = Album.album_id;
+select Banda.nome as banda, Musica.nome as musica, Album.nome as album, Album.lancamento as ano 
+from Banda 
+	left join Musica on Banda.banda_id = Musica.banda_id
+	left join Album on Musica.album_id =  Album.album_id;
+select Musica.nome from Banda join Musica on Banda.banda_id = Musica.banda_id where Banda.nome like 'Kiloucura';
+select Banda.nome, Musica.nome, Album.nome, Album.lancamento, Estilo.nome
+from Banda
+	left join Musica on Banda.banda_id = Musica.banda_id
+    left join Album on Musica.album_id = Album.album_id
+    left join Estilo on Banda.estilo_id = Estilo.estilo_id;
+select Banda.nome as Banda, Musica.nome as Musica, Album.nome as Album, Album.lancamento as Lancamento, Estilo.nome as Estilo
+from Banda
+	left join Musica on Banda.banda_id = Musica.banda_id
+    left join Album on Musica.album_id = Album.album_id
+    left join Estilo on Banda.estilo_id = Estilo.estilo_id;

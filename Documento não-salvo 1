@@ -1,0 +1,53 @@
+DROP DATABASE IF EXISTS brasileirao;
+CREATE DATABASE brasileirao;
+USE brasileirao;
+create table brasileirao(
+	brasileirao_id int PRIMARY KEY, -- insere id como identificador... 
+    Classificacao VARCHAR(10) NOT NULL,
+    Clube VARCHAR(100) NOT NULL,
+    Pontos VARCHAR(10) NOT NULL,
+    Jogos VARCHAR(10) NOT NULL,
+    Vitorias VARCHAR(10)
+    Empates VARCHAR(10)
+    Derrotas VARCHAR(10)
+    GolsPro VARCHAR(10)
+    GolsContra VARCHAR(10)
+    SaldoGols VARCHAR(10)
+    Percentual VARCHAR(10)
+);
+
+INSERT INTO  VALUES
+(1, 1, 'Botafogo','57','28', '17','6','5','46','25','21','67');
+
+INSERT INTO musicas (musica_id, banda, musica, album, estilo, duracao) 
+VALUES  (2, 'ACDC','Burning Alive','Ballbreaker', "Hard Rock", "03:20");
+
+INSERT INTO musicas (musica_id, banda, musica, album, estilo, duracao) VALUES
+(4, 'Aerosmith','Round and Round','Toys in the attic', "Hard Rock", "03:20"),
+(5, 'Black Label Society','Fire it up','Mafia', "Metal", "05:00"),
+(6, 'Crazy Lixx','Hell raising woman','Crazy Lixx', "Glam Metal", "05:00");
+
+SELECT banda FROM musicas;
+SELECT banda, musica FROM musicas;
+SELECT banda, musica, album, estilo FROM musicas;
+SELECT banda, musica, album, estilo FROM musicas WHERE estilo='Hard Rock';
+SELECT musica_id, banda, musica, album, estilo FROM musicas WHERE musica_id > 2;
+SELECT musica_id, banda, musica, album, estilo FROM musicas WHERE musica_id < 2;
+SELECT musica_id, banda, musica, album, estilo FROM musicas WHERE musica_id <= 2;
+SELECT musica_id, banda, musica, album, estilo FROM musicas WHERE musica_id != 2;
+SELECT musica_id, banda, musica, album, estilo FROM musicas WHERE musica_id BETWEEN 1 AND 4;
+SELECT musica_id, banda, musica, album, estilo FROM musicas WHERE estilo LIKE "Rock";
+SELECT musica_id, banda, musica, album, estilo FROM musicas WHERE estilo LIKE "%Rock";
+
+SELECT musica_id AS ID, banda AS Banda, musica AS Musica,
+album AS Disco, estilo AS Genero FROM musicas WHERE estilo LIKE "%Rock";
+
+SELECT musica_id, banda, musica, album, estilo FROM musicas WHERE musica_id>=1 AND musica_id<=4;
+SELECT musica_id, banda, musica, album, estilo FROM musicas WHERE banda="ACDC"  OR banda="Led Zeppelin";
+
+SELECT musica_id, banda, musica, album, estilo FROM musicas WHERE musica_id>2 AND estilo NOT LIKE "%Rock";
+
+SELECT musica_id, banda, musica, album, estilo FROM musicas WHERE musica_id>2 and musica_id IS NOT NULL;
+
+
+
